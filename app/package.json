@@ -5,17 +5,20 @@
     "main": "server.js",
     "type": "module",
     "dependencies": {
-      "pg": "8.7.1",
-      "ejs": "^2.6.1",
-      "express": "^4.16.4",
-      "nodemon": "^1.18.10"
+        "ejs": "^2.6.1",
+        "express": "^4.16.4",
+        "nodemon": "^1.18.10",
+        "pg": "8.7.1"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "mocha": "^10.0.0",
+        "supertest": "^6.2.4"
+    },
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "nodemon server.js"
+        "test": "mocha tests/server.test.js --exit",
+        "start": "nodemon server.js"
     },
     "keywords": [],
     "author": "",
     "license": ""
-  }
+}
