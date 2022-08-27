@@ -1,7 +1,20 @@
 version: "3.7"
 
 services:
-    postgres:
+    app:
+        image: exercise:latest
+        ports:
+            - 4000:4000
+        volumes:
+            - ./app/server.js:/app/server.js
+        environment:
+            PGUSER: postgres
+            PGHOST: bd_postgres
+            PGPASSWORD: postgres
+            PGPORT: 5432
+            PGDATABASE: devops
+
+    bd_postgres:
         image: postgres:13.8
         expose:
           - 5432

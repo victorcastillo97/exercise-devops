@@ -1,5 +1,13 @@
 const _express = require('express');
 const _server = _express();
+const {Pool} = require('pg')
+
+const pool = new Pool();
+
+const registry_data = async (value1, value2, result) => {
+  const text = 'INSERT INTO results(value1,value2,result) VALUES($1,$2,$3) RETURNING *';
+  pool.query(text, [value1, value2, result]);
+}
 
 const _port = 4000;
 
@@ -10,6 +18,7 @@ _server.get('/retoibm/sumar/:sumando01/:sumando02', function(request, response) 
     var _resultado = _sumando01 + _sumando02;
 
     if (typeof _resultado !== "undefined" && _resultado!==null && !isNaN(_resultado)){
+      registry_data(_sumando01,_sumando02,_resultado)
       return response.status(200).json({resultado : _resultado});
     }else{
       return response.status(400).json({resultado : "Bad Request"});
