@@ -17,3 +17,6 @@ secret.create: generate.password
 	--description "postgres" \
 	--secret-string '{"password":$(PASSWORD)}' --region ${REGION}
 
+secret.get.value:
+	@aws secretsmanager get-secret-value \
+    --secret-id ${SECRET_NAME_BD}
