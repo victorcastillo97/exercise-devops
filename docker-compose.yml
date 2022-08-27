@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  api:
+    image: exercise:latest
+    depends_on:
+      - bd_postgres
+    environment:
+      - PGUSER=postgres
+      - PGHOST=bd_postgres
+      - PGPASSWORD=postgres
+      - PGPORT=5432
+      - PGDATABASE=devops
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+    depends_on:
+      - api
+    ports:
+      - 9090:4000
+
+  bd_postgres:
+      image: app.bd:latest
+      ports:
+        - 6000:5432
+      environment:
+        POSTGRES_PASSWORD: postgres

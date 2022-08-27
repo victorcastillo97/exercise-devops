@@ -5,7 +5,7 @@ const {Pool} = require('pg')
 const pool = new Pool();
 
 const registry_data = async (value1, value2, result) => {
-  const text = 'INSERT INTO results(sumando01,sumando02,resultado) VALUES($1,$2,$3) RETURNING *';
+  const text = 'INSERT INTO Results(sumando01,sumando02,resultado) VALUES($1,$2,$3) RETURNING *';
   pool.query(text, [value1, value2, result]);
 }
 
