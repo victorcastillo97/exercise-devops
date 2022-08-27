@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "main": "server.js",
+    "type": "module",
     "dependencies": {
       "pg": "8.7.1",
       "ejs": "^2.6.1",
