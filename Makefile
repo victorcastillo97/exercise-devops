@@ -1,4 +1,4 @@
-include makefiles/ssh.mk
+include makefiles/ct.mk
 include makefiles/ecr.mk
 
 
