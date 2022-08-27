@@ -1,6 +1,11 @@
 version: '3.9'
 
 services:
+  bd_postgres:
+      image: app.bd:latest
+      environment:
+        POSTGRES_PASSWORD: postgres
+
   api:
     image: exercise:latest
     depends_on:
@@ -13,17 +18,9 @@ services:
       - PGDATABASE=devops
 
   nginx:
-    image: nginx:latest
-    volumes:
-      - ./conf.d:/etc/nginx/conf.d
+    image: proxy:latest
     depends_on:
       - api
     ports:
       - 9090:4000
 
-  bd_postgres:
-      image: app.bd:latest
-      ports:
-        - 6000:5432
-      environment:
-        POSTGRES_PASSWORD: postgres
