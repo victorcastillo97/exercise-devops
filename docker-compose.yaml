@@ -5,8 +5,6 @@ services:
         image: exercise:latest
         ports:
             - 4000:4000
-        volumes:
-            - ./app/server.js:/app/server.js
         environment:
             PGUSER: postgres
             PGHOST: bd_postgres
@@ -15,12 +13,8 @@ services:
             PGDATABASE: devops
 
     bd_postgres:
-        image: postgres:13.8
-        expose:
-          - 5432
+        image: app.bd:latest
         ports:
-          - 3000:5432
-        volumes:
-            - ./app/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+          - 5000:5432
         environment:
             POSTGRES_PASSWORD: postgres

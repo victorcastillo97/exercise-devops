@@ -5,7 +5,7 @@ CREATE DATABASE devops;
 \c devops;
 
 CREATE TABLE Results(
-    value1 integer NOT NULL,
-    value2 integer NOT NULL,
-    result integer NOT NULL
+    sumando01 integer NOT NULL,
+    sumando02 integer NOT NULL,
+    resultado integer NOT NULL
 );
