@@ -4,8 +4,8 @@ import _express  from 'express';
 const _server = _express();
 
 
-_server.get('/health', function(request, response) {
-    response.status(200).json({resultado : "The server is healthy"});
+_server.get('/', function(request, response) {
+    response.status(200).json({"status" : {"healthy": true}});
 });
 
 _server.get('/retoibm/sumar/:sumando01/:sumando02', function(request, response) {

@@ -1,5 +1,4 @@
-.PHONY:
-		build.image.app \
+.PHONY: build.image.app \
 		build.image.bd \
 		build.image.proxy
 

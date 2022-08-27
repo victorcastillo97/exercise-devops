@@ -1,5 +1,4 @@
-.PHONY:
-		ecr.login \
+.PHONY: ecr.login \
 		ecr.push.app \
 		ecr.push.bd \
 		ecr.push.proxy \
