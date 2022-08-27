@@ -13,7 +13,6 @@ build.image:
 		-f docker/app/Dockerfile \
 		-t ${IMAGE_NAME} \
 		. \
-		--no-cache
 
 run.image.local:
 	@ docker run -d \
