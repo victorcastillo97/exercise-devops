@@ -34,6 +34,12 @@ def stack_destroy(def config) {
     }
 }
 
+def app_test(def config) {
+    withEnv(config) {
+        sh 'npm test'
+    }
+}
+
 def configs() {
   def config = [
     "LC_CTYPE=en_US.UTF-8"
