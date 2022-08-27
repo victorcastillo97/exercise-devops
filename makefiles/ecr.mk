@@ -1,21 +1,16 @@
-.PHONY: ecr.create \
-		ecr.destroy \
+.PHONY:
 		ecr.login \
-		ecr.push \
-
-
-NAME_APP = app-${PROJECT_NAME}
-NAME_BD = bd-${PROJECT_NAME}
-NAME_PROXY = proxy-${PROJECT_NAME}
-
-IMAGE_APP = ${NAME_APP}:latest
-IMAGE_BD = ${NAME_BD}:latest
-IMAGE_PROXY = ${NAME_PROXY}:latest
+		ecr.push.app \
+		ecr.push.bd \
+		ecr.push.proxy \
+		ecr.destroy.images
 
 ECR_REGION = us-west-2
+PROFILE = default
 
 envs:
 	$(eval AWS_ACCOUNT_ID = $(shell aws sts get-caller-identity --query "Account" --output text))
+	$(eval PATH_ECR = ${AWS_ACCOUNT_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com)
 
 ecr.consult:
 	@aws ecr describe-repositories --repository-names ${REPOSITORY} --region $(ECR_REGION)
@@ -38,54 +33,33 @@ ecr.create:
 	@echo $(COMMAND)
 
 ecr.login: envs
-	@aws ecr get-login-password --region ${ECR_REGION} --profile default | \
+	@aws ecr get-login-password --region ${ECR_REGION} --profile ${PROFILE} | \
 	docker login --username AWS --password-stdin \
-	${AWS_ACCOUNT_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+	${PATH_ECR}
 
-
-build.image.app:
-	@ docker build  \
-		-f docker/app/Dockerfile \
-		-t ${IMAGE_APP} \
-		. \
-		--no-cache
-
-build.image.bd:
-	@ docker build  \
-		-f docker/bd/Dockerfile \
-		-t ${IMAGE_BD} \
-		. \
-		--no-cache
-
-build.image.proxy:
-	@ docker build  \
-		-f docker/proxy/Dockerfile \
-		-t ${IMAGE_PROXY} \
-		docker/proxy/ \
-		--no-cache
 
 ecr.tag.image: envs
-	@docker tag ${IMAGE} ${AWS_ACCOUNT_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com/${IMAGE}
+	@docker tag ${IMAGE} ${PATH_ECR}/${IMAGE}
 
 ecr.push: envs
-	@docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com/${IMAGE}
+	@docker push ${PATH_ECR}/${IMAGE}
 
 ecr.push.app:
-	@ export REPOSITORY=${NAME_APP} && make ecr.create && \
+	@ export REPOSITORY=${NAME_PROJECT_APP} && make ecr.create && \
 		make ecr.tag.image IMAGE=${IMAGE_APP} && \
 		make ecr.push IMAGE=${IMAGE_APP}
 
 ecr.push.bd:
-	@ export REPOSITORY=${NAME_BD} && make ecr.create && \
+	@ export REPOSITORY=${NAME_PROJECT_BD} && make ecr.create && \
 		make ecr.tag.image IMAGE=${IMAGE_BD} && \
 		make ecr.push IMAGE=${IMAGE_BD}
 
 ecr.push.proxy:
-	@ export REPOSITORY=${NAME_PROXY} && make ecr.create && \
+	@ export REPOSITORY=${NAME_PROJECT_PROXY} && make ecr.create && \
 		make ecr.tag.image IMAGE=${IMAGE_PROXY} && \
 		make ecr.push IMAGE=${IMAGE_PROXY}
 
 ecr.destroy.images:
-	@for number in ${NAME_APP} ${NAME_BD} ${NAME_PROXY} ; do \
+	@for number in ${NAME_PROJECT_APP} ${NAME_PROJECT_BD} ${NAME_PROJECT_PROXY} ; do \
         export REPOSITORY=$$number && make ecr.destroy ; \
     done
