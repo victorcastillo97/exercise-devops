@@ -52,7 +52,8 @@ pipeline{
                 }
             }
         }
-        stage('Deploy Stack') {
+
+        stage('Deploy app, database and proxy'){
             when { expression { return params.STACK == 'DEPLOY' }}
             steps {
                 script {
