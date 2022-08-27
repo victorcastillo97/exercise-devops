@@ -6,6 +6,10 @@ services:
       environment:
         POSTGRES_PASSWORD: postgres
 
+# Las credenciales aun quedaron pendientes de configurarse,
+# se haria uso de la secret manager para generar y obtener a traves de la cli de aws la clave,
+# se puede ver el avance en el archivo /makefiles/secret.mk
+
   api:
     image: "${IMAGE_APP}"
     depends_on:
