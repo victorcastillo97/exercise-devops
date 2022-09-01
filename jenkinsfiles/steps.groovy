@@ -1,5 +1,6 @@
 def build_images(def config) {
     withEnv(config) {
+        sh 'make build.image.app.testing'
         sh 'make build.image.app'
         sh 'make build.image.bd'
         sh 'make build.image.proxy'
@@ -34,9 +35,9 @@ def stack_destroy(def config) {
     }
 }
 
-def app_test(def config) {
+def execute_test_app(def config) {
     withEnv(config) {
-        sh 'npm test'
+        sh 'make unit.testing.app'
     }
 }
 

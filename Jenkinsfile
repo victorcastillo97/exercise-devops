@@ -27,13 +27,15 @@ pipeline{
             }
         }
 
-        stage('Info') {
+        stage('Execute test for app') {
+            when { expression { return params.STACK == 'DEPLOY' }}
             steps {
                 script {
-                    fnSteps.deploy_info(config)
+                    fnSteps.execute_test_app(config)
                 }
             }
         }
+
 
         stage('Push images to ECR') {
             when { expression { return params.STACK == 'DEPLOY' }}
